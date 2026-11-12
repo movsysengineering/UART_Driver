@@ -60,8 +60,8 @@ all: main-build
 main-build: UART_Echo.elf secondary-outputs
 
 # Tool invocations
-UART_Echo.elf UART_Echo.map: $(OBJS) $(USER_OBJS) C:\Users\presi\STM32CubeIDE\workspace_2.1.1\UART_Echo\STM32C031C6TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "UART_Echo.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\presi\STM32CubeIDE\workspace_2.1.1\UART_Echo\STM32C031C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="UART_Echo.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+UART_Echo.elf UART_Echo.map: $(OBJS) $(USER_OBJS) C:\Users\presi\STM32CubeIDE\Personal\UART_Driver\UART_Echo\STM32C031C6TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "UART_Echo.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\presi\STM32CubeIDE\Personal\UART_Driver\UART_Echo\STM32C031C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="UART_Echo.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
