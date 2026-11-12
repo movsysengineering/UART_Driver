@@ -1,10 +1,10 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-
+ * @file    main.c
+ * @brief   STM32C031 Polling UART Demonstration
+ * @details Single-byte buffer, live-echo UART terminal loop.
+ * 			Echoes characters as typed.
+ *
   ******************************************************************************
   */
 /* USER CODE END Header */
