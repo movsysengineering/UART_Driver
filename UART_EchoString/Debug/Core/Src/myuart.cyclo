@@ -1,0 +1,6 @@
+../Core/Src/myuart.c:33:6:initClock	1
+../Core/Src/myuart.c:53:6:configurePort	1
+../Core/Src/myuart.c:73:6:configureUART	1
+../Core/Src/myuart.c:99:6:initUART	1
+../Core/Src/myuart.c:108:6:transmitUART	2
+../Core/Src/myuart.c:156:6:receiveUART	4
