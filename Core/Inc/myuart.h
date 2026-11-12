@@ -9,7 +9,7 @@
 #define INC_MYUART_H_
 
 void initUART();
-void transmitUART(char tx);
+void transmitUART(char data);
 char receiveUART(void);
 
 

@@ -122,11 +122,10 @@ void transmitUART(char dataTX)
     USART2->TDR = dataTX;									//	once while loop breaks, write exactly once
 
 }
-
-char receiveUART(void)
+/* char receiveUART(void)
 
 {
-	/*
+
 	  * RXNE flag (FIFO disabled) or RXFNE (FIFO enabled) is bit 5 of USART_ISR register
 	  *
 	  * RXNE bit is cleared by HW when data in USART_RDR has been read/no new data
@@ -134,9 +133,62 @@ char receiveUART(void)
 	  *
 	  * RXNE/RXFNE = 0 - no data to read i.e. cleared by HW when USART_RDR register is empty/data has been read
 	  * RXNE/RXFNE = 1 - data ready to read i.e. set by HW when USART_RDR register is full
-	 */
+	  *
+	  * An overrun error occurs if a character is received and RXNE/RXFNE has not been reset. How can a character be received again?
+
 
     while (!(USART2->ISR & USART_ISR_RXNE_RXFNE));				//	wait here while receive data register USART_RDR is empty
-    return (char)USART2->RDR;									//	once while loop breaks, read exactly once
+	ISR=USART2->ISR;
+	ISR = USART2->ISR;
+    return (char)USART2->RDR;									//	loop breaks when RXNE bit is set, read exactly once. If commented out and second char is entered overrun should be set
+    if (USART2->ISR & USART_ISR_ORE)							//	if Overrun bit is set
+    {
+    	ISR=USART2->ISR;
+    	USART2->ICR = USART_ICR_ORECF;							//	clear ORE
+    	ISR=USART2->ISR;
+    	return 'O';
+    }
+
+    return (char)USART2->RDR;									//	loop breaks when RXNE bit is set, read exactly once to clear RXNE bit. If commented out and second char is entered overrun should be set
+}
+*/
+
+char receiveUART(void)
+
+{
+
+	 /*
+	  * RXNE flag (FIFO disabled) or RXFNE (FIFO enabled) is bit 5 of USART_ISR register
+	  *
+	  * RXNE bit is cleared by HW when data in USART_RDR has been read/no new data
+	  * RXNE bit is set by HW when content of RX shift register has been transferred USART_RDR register
+	  *
+	  * RXNE/RXFNE = 0 - no data to read i.e. cleared by HW when USART_RDR register is empty/data has been read
+	  * RXNE/RXFNE = 1 - data ready to read i.e. set by HW when USART_RDR register is full
+	  *
+	  */
+
+
+		while (!(USART2->ISR & USART_ISR_RXNE_RXFNE));				//	wait here while receive data register USART_RDR is empty
+
+		/*
+		 * Delay loop inserted to simulate application code delay
+		 * Because RDR is still full, if a second character is entered, an overrun will occur
+		 */
+
+		for (volatile int d = 0; d < 100000; d++);
+
+		if (USART2->ISR & USART_ISR_ORE)							//	if Overrun bit is set
+		    {
+		    	//ISR=USART2->ISR;									//	for debug
+		    	USART2->ICR = USART_ICR_ORECF;						//	clear ORE
+		    	//ISR=USART2->ISR;									//	for debug
+		    	return '*';
+		    }
+
+
+		return (char)USART2->RDR;
+
 
 }
+

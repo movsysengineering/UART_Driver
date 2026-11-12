@@ -1,12 +1,14 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
+ * @file    main.c
+ * @brief   STM32C031 Polling UART Demonstration with Overrun (ORE) Trap
+ * @details Single-byte buffer, live-echo UART terminal loop.
+ * 			Echoes characters as typed and prints the accumulated line on Enter.
+ * 			Intentionally injects a CPU processing delay to force and catch
+ * 			hardware Receiver Overrun Errors (ORE), proving the data-loss
+ * 			limitations of a synchronous polling architecture.
+ */
 
-  ******************************************************************************
-  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -57,7 +59,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  char data;
+  char buf[32];
+  uint8_t i;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -85,13 +88,31 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
-	data=receiveUART();
-	transmitUART(data);
-    /* USER CODE BEGIN 3 */
+	  i = 0;
+
+	  // 1. Read chars, live echo, stop on Enter
+	  while (1)
+	  {
+		  char c = receiveUART();
+		  if (c == '\r' || c == '\n') break;
+		  transmitUART(c);
+		  buf[i++] = c;
+	  }
+
+	  // 2. Echo back the full string
+	  transmitUART('\n');
+	  transmitUART('\r');
+
+	  for (int j = 0; j < i; j++)
+	  {
+		  transmitUART(buf[j]);
+	  }
+
+	  transmitUART('\n');
+	  transmitUART('\r');
   }
-  /* USER CODE END 3 */
 }
+  /* USER CODE END 3 */
 
 /**
   * @brief System Clock Configuration
