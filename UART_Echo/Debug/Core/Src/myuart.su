@@ -1,0 +1,6 @@
+../Core/Src/myuart.c:33:6:initClock	8	static
+../Core/Src/myuart.c:53:6:configurePort	8	static
+../Core/Src/myuart.c:73:6:configureUART	8	static
+../Core/Src/myuart.c:99:6:initUART	8	static
+../Core/Src/myuart.c:108:6:transmitUART	16	static
+../Core/Src/myuart.c:126:6:receiveUART	8	static
